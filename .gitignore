@@ -1,0 +1,13 @@
+node_modules
+public
+.tmp
+.sass-cache
+app/bower_components
+heroku
+/views
+dist
+app/bower_components
+.DS_Store
+!karma-e2e.conf.js
+!karma.conf.js
+!Gruntfile.js

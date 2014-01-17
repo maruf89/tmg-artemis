@@ -1,0 +1,30 @@
+html,
+body,
+.container[ng-view]
+    @extends $full-size
+
+body
+    background _red
+    font normal $root-font-size/1.2em $root-font
+    color $root-color
+
+div,
+section
+    box-sizing border-box
+
+
+
+.inner
+    @extends $full-size
+    position relative
+
+img
+    max-width 100%
+    height auto
+
+
+iframe
+    max-width 100%
+
+a
+    text-decoration none
