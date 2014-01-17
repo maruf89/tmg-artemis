@@ -9,6 +9,22 @@
 
 module.exports = function (grunt) {
 
+  var nodemonIgnoredFiles = [
+    '.tmp/**',
+    'app/**',
+    'node_modules/**',
+    'test/**',
+    '.bowerrc',
+    '.editorconfig',
+    '.gitattributes',
+    '.gitignore',
+    '.jshintrc',
+    '*.json',
+    'README.md',
+    'Gruntfile.js',
+    'karma.conf.js',
+  ];
+
   // Load grunt tasks automatically
   require('load-grunt-tasks')(grunt);
 
@@ -24,27 +40,9 @@ module.exports = function (grunt) {
       app: require('./bower.json').appPath || 'app',
       dist: 'dist'
     },
-    express: {
-      options: {
-        port: process.env.PORT || 9000
-      },
-      dev: {
-        options: {
-          script: 'server.js',
-          'debug-brk': 5858,
-          debug: true
-        }
-      },
-      prod: {
-        options: {
-          script: 'dist/server.js',
-          node_env: 'production'
-        }
-      }
-    },
     open: {
       server: {
-        url: 'http://localhost:<%= express.options.port %>'
+        url: 'http://localhost:9000'
       }
     },
     watch: {
@@ -75,19 +73,18 @@ module.exports = function (grunt) {
           livereload: true
         }
       },
-      express: {
-        files: [
-          'server.js',
-          'lib/**/*.{js,json}'
-        ],
-        tasks: ['newer:jshint:server', 'express:dev'],
-        options: {
-          livereload: true,
-          nospawn: true //Without this option specified express won't be reloaded
-        }
-      }
+      // express: {
+      //   files: [
+      //     'server.js',
+      //     'lib/**/*.{js,json}'
+      //   ],
+      //   tasks: ['newer:jshint:server', 'nodemon:dev'],
+      //   options: {
+      //     livereload: true,
+      //     nospawn: true //Without this option specified express won't be reloaded
+      //   }
+      // }
     },
-
     // Make sure code styles are up to par and there are no obvious mistakes
     jshint: {
       options: {
@@ -252,6 +249,31 @@ module.exports = function (grunt) {
       }
     },
 
+    nodemon: {
+      dev: {
+        options: {
+          file: 'server.js',
+          args: ['--debug', 'development'],
+          watchedExtensions: [
+            'js',
+            'styl'
+          ],
+          watchedFolders: ['.'],
+          delayTime: 1,
+          ignoredFiles: nodemonIgnoredFiles
+        }
+      }
+    },
+
+    'node-inspector': {
+      custom: {
+        'web-port': 8080,
+        'web-host': '127.0.0.1',
+        'debug-port': 5858,
+        'save-live-edit': false
+      }
+    },
+
     // Replace Google CDN references
     cdnify: {
       dist: {
@@ -311,6 +333,16 @@ module.exports = function (grunt) {
 
     // Run some tasks in parallel to speed up the build process
     concurrent: {
+      nodemon: {
+        options: {
+          logConcurrentOutput: true
+        },
+        tasks: [
+          'nodemon:dev',
+          'node-inspector',
+          'watch'
+        ]
+      },
       server: [
         'copy:stylus',
         'coffee:dist'
@@ -325,6 +357,10 @@ module.exports = function (grunt) {
         'imagemin',
         'svgmin',
         'htmlmin'
+      ],
+      watch: [
+        'watch',
+        'node-inspector'
       ]
     },
 
@@ -376,9 +412,8 @@ module.exports = function (grunt) {
       'clean:server',
       'bower-install',
       'concurrent:server',
-      'express:dev',
-      'open',
-      'watch'
+      'concurrent:nodemon',
+      //'open',
     ]);
   });
 
