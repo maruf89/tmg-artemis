@@ -1,23 +1,42 @@
 "use strict"
 
+request     = require('request')
+url         = require('url')
+_           = require('lodash')
+
+###*
+ * Store all the search variables here
+ * @type {object}
 ###
-Get awesome things
+vars = require("#{process.cwd()}/lib/config/search.json")
+
+searchBase  = null
+host        = vars.API_URL
+
+_buildBase = (params) ->
+    base = []
+
+    _.each params, (val, key) ->
+        base.push("#{key}=#{val}")
+
+    return base.join('&')
+
+_appendQuery = ->
+    return [].slice.call(arguments).join('&')
+
+
+###*
+ * Search this MoFo'in shizow
 ###
-exports.awesomeThings = (req, res) ->
-  res.json [
-    name: "HTML5 Boilerplate"
-    info: "HTML5 Boilerplate is a professional front-end template for building fast, robust, and adaptable web apps or sites."
-    awesomeness: 10
-  ,
-    name: "AngularJS"
-    info: "AngularJS is a toolset for building the framework most suited to your application development."
-    awesomeness: 10
-  ,
-    name: "Karma"
-    info: "Spectacular Test Runner for JavaScript."
-    awesomeness: 10
-  ,
-    name: "Express"
-    info: "Flexible and minimalist web application framework for node.js."
-    awesomeness: 10
-  ]
+exports.search = (req, res) ->
+    query = _.extend({q: req.query.query}, vars.query)
+    url = vars.API_URL + '?' + _buildBase(query)
+
+    request {
+        uri: url
+        method: 'GET'
+
+    }, (err, _res, body) ->
+        res.send(body)
+
+searchBase = _buildBase(vars.query)

@@ -1,6 +1,7 @@
 html,
 body,
-.container[ng-view]
+.container[ng-view],
+.wrapper
     @extends $full-size
 
 body
@@ -12,7 +13,8 @@ div,
 section
     box-sizing border-box
 
-
+.wrapper
+    position relative
 
 .inner
     @extends $full-size

@@ -55,7 +55,8 @@
     "connect-asset": "0.0.3",
     "nib": "~1.0.2",
     "grunt-node-inspector": "~0.1.2",
-    "grunt-nodemon": "~0.1.2"
+    "grunt-nodemon": "~0.1.2",
+    "request": "~2.33.0"
   },
   "engines": {
     "node": ">=0.8.0"

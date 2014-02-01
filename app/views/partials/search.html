@@ -1,0 +1,7 @@
+<div class="tmg-search">
+    <form id="prettySearch" name="tmgSearch" ng-submit="prettySearch()">
+        <label class="hide" for="prettyInput">Pretty Search:</label>
+        <input type="search" name="input" ng-model="query" id="prettyInput" required />
+        <span class="error" ng-show="tmgSearch.input.$dirty && tmgSearch.input.$error.required">Required!</span>
+    </form>
+</div>

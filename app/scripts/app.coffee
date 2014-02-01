@@ -1,6 +1,6 @@
 'use strict'
 
-angular.module('artemisSearchApp', [
+window.myApp = angular.module('artemisSearchApp', [
   'ngCookies',
   'ngResource',
   'ngSanitize',

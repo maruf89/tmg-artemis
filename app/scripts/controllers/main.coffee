@@ -1,6 +1,6 @@
 'use strict'
 
-angular.module('artemisSearchApp')
-  .controller 'MainCtrl', ($scope, $http) ->
-    $http.get('/api/awesomeThings').success (awesomeThings) ->
-      $scope.awesomeThings = awesomeThings
+myApp = window.myApp
+
+myApp.controller 'MainCtrl', ($scope, $http) ->
+    1
